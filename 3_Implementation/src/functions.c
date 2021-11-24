@@ -1,1 +1,231 @@
+#include<stdio.h>
+#include"program.h"
+   void input()
+	{
+	  FILE *fp = fopen("cbs.dat", "r+");
+	  fseek (fp, 0, SEEK_END);
+	  tl = ftell(fp);
+	  sl = sizeof(customer);
+	  ts = tl / sl;
+	  fseek(fp, (ts-1)*sl, SEEK_SET);
+	  fread(&customer, sl, 1, fp);
 
+	  printf("\nCustomer Number:%d\n", ++customer.number);
+	  fclose(fp);
+	  printf("Account Number: %d", customer.number);
+	  customer.acc_no = customer.number;
+	  fflush(stdin);						
+
+	  printf("\n       Name: ");
+	  gets(customer.name);
+	  printf("\n       Phone Number: ");
+	  scanf("%f", &customer.mobile_no);
+	  fflush(stdin);
+	  printf("         Street: ");
+	  gets(customer.street);
+	  fflush(stdin);
+	  printf("         City: ");
+	  gets(customer.city);
+	  printf("         Previous Due : ");
+	  scanf("%f", &customer.newbal);
+	  int key;
+	  			payment:{
+			    puts("\n1.Purchase?\t2.Due Payment");
+			    scanf("%d",&key);
+			    if(key == 1){
+			    	fflush(stdin);
+				printf(" \n        Current Purchase Amount: ");
+				scanf("%f", &customer.payment);
+					fflush(stdin);
+				printf("\n         Purchase date(dd/mm/yyyy): ");
+				scanf("%d/%d/%d", &customer.lastpayment.day, &customer.lastpayment.month, &customer.lastpayment.year);
+							customer.newbal = customer.newbal + customer.payment;			//Updates 
+				}
+				else if(key==2){
+					fflush(stdin);
+					printf("Enter Payment amount:");
+					scanf("%f",&customer.payment);
+					fflush(stdin);
+					printf("\n         Payment date(dd/mm/yyyy): ");
+				scanf("%d/%d/%d", &customer.lastpayment.day, &customer.lastpayment.month, &customer.lastpayment.year);
+							customer.newbal = customer.newbal - customer.payment;
+				}
+				else{
+					fflush(stdin);
+					puts("Enter valid choice\nTry Again");
+					goto payment;
+				}
+				}
+	  return;
+   }
+
+   void writefile()
+   {
+	  int c;
+	  FILE *fp;
+	  fp = fopen("cbs.dat", "ab");
+	  fflush(stdin);
+	  c = fwrite(&customer, sizeof(customer), 1, fp);
+				  			if(c == 1)
+				  			puts("\tRecord Update SUCCEESSFULLY");
+				  			else
+				  			puts("\tRecord Update FAILED");
+	  fclose(fp);
+
+	  return;
+   }
+
+void search()
+   {
+	 char ch;
+	 char nam[100];
+	 int n, i, m = 1;
+	 FILE *fp;
+	 fp = fopen("cbs.dat", "rb");
+
+	 do{
+		printf("\nEnter your choice: ");
+		ch = getchar();
+	 }while(ch != '1' && ch != '2');
+
+	 switch(ch){
+
+	      case '1':
+		    fseek(fp, 0, SEEK_END);
+		    tl = ftell(fp);
+		    sl = sizeof(customer);
+		    ts = tl / sl;
+		    do{
+			printf("\nChoose Customer Number: ");
+			scanf("%d", &n);
+			if(n <= 0 || n > ts)
+			printf("\nOpps!!! No Result Found\n");
+			else{
+			    fseek(fp, (n-1)*sl, SEEK_SET);
+			    fread(&customer, sl, 1, fp);
+			    display();
+			}
+			printf("\n\nDo You Wish To Search Again?(y/n) ");
+			ch = getchar();
+		    }while(ch == 'Y');
+		    fclose(fp);
+		    break;
+
+		  case '2':
+		    fseek(fp, 0, SEEK_END);
+		    tl = ftell(fp);
+		    sl = sizeof(customer);
+		    ts = tl / sl;
+		    fseek(fp, (ts-1)*sl, SEEK_SET);
+		    fread(&customer, sizeof(customer), 1, fp);
+		    n = customer.number;
+		    do{
+			printf("\nEnter the Name: ");
+			fflush(stdin);
+			gets(nam);
+			fseek(fp, 0, SEEK_SET);
+			for(i = 1; i <= n; i++)
+			{
+			     fread(&customer, sizeof(customer), 1, fp);
+			     if(strcmp(customer.name, nam) == 0)
+			     {
+				display();
+				m = 0;
+				break;
+			     }
+			}
+			if(m != 0)
+			printf("\n\nSorry!!! DOESN'T Exist\n");
+			printf("\nDo You Wish to search Again?(Y/n) ");
+			ch = getchar();
+		    }while(ch == 'Y');
+		    fclose(fp);
+	      }
+
+		  return;
+	 }
+
+void update()
+{
+	char ch;
+	int n, c;
+	FILE *fp = fopen("cbs.dat", "rb+");
+	  fseek (fp, 0, SEEK_END);
+	  tl = ftell(fp);
+	  sl = sizeof(customer);
+	  ts = tl / sl;
+			do{
+			fread(&customer, ts, 1, fp);
+			printf("\nEnter Customer Number: ");
+			fflush(stdin);
+			scanf("%d", &n);
+			if(ts<1){
+			puts("Database Empty\nAdd Customer First.");
+			main();
+		}
+			if(n <= 0 || n > ts)
+			{
+				printf("\nEnter correct\n");
+				fflush(stdin);
+				update();
+			}
+			else if(ts=0)
+			puts("Record is Empty!");
+			else{
+			    fseek(fp, (n-1)*sl, SEEK_SET);
+			    fread(&customer, sl, 1, fp);
+			    printf("\tName:	%s\n", customer.name);
+			    printf("\tPrevious Due : %.2f\n", customer.newbal);
+			    fflush(stdin);
+			    int key;
+			    puts("\n1.Purchase\t2.Due Payment");
+			    scanf("%d",&key);
+			    if(key == 1){
+			    	fflush(stdin);
+				printf(" \n        Current Purchase Amount: ");
+				scanf("%f", &customer.payment);
+					fflush(stdin);
+				printf("\n         Purchase date(dd/mm/yyyy): ");
+				scanf("%d/%d/%d", &customer.lastpayment.day, &customer.lastpayment.month, &customer.lastpayment.year);
+							customer.newbal = customer.newbal + customer.payment;			//Updates 
+				}
+				else if(key==2){
+					fflush(stdin);
+					printf("Enter Payment amount:");
+					scanf("%f",&customer.payment);
+					fflush(stdin);
+					printf("\n         Payment date(dd/mm/yyyy): ");
+				scanf("%d/%d/%d", &customer.lastpayment.day, &customer.lastpayment.month, &customer.lastpayment.year);
+							customer.newbal = customer.newbal - customer.payment;
+				}
+				else{
+					puts("Enter valid choice\nTry Again");
+					return update();
+				}
+
+							fseek(fp, -sl, 1);
+							c = fwrite(&customer, sizeof(customer), 1, fp);
+				  			if(c == 1)
+				  			puts("\tRecord Updated SUCCEESSFULLY");
+				  			else
+				  			puts("\tRecord Update FAILED");
+				  			fclose(fp);
+				  			display();
+							main();
+						}
+						}while(n<=0 || n>ts);
+}
+
+
+   void display()
+	 {
+	   printf("\n\nCustomer Number : %d\n",customer.number);
+	   printf("    Name 	       : %s\n",customer.name);
+	   printf("    Phone Number    : %.f\n",customer.mobile_no);
+	   printf("    Account number  : %d\n",customer.acc_no);
+	   printf("    Street          : %s\n",customer.street);
+	   printf("    City            : %s\n",customer.city);
+	   printf("    Last Payment    : %.2f\n",customer.payment);
+	   printf("    Due             : %.2f\n",customer.newbal);
+	   printf("    Payment date    : %d/%d/%d\n\n",customer.lastpayment.day,customer.lastpayment.month,customer.lastpayment.year);
+		}
