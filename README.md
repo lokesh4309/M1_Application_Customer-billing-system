@@ -1,5 +1,8 @@
 # M1_Application_Customer-billing-system
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a3f28c8e3ddf4b47a8e9de6779147beb)](https://www.codacy.com/gh/lokesh4309/M1_Application_Customer-billing-system/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lokesh4309/M1_Application_Customer-billing-system&amp;utm_campaign=Badge_Grade)
+
+
 # SDLC Activity Based Learning
 Visit [Pages for Report -optional](using github.io option)
 
