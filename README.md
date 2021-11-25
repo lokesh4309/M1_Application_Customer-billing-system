@@ -1,12 +1,12 @@
 # M1_Application_Customer-billing-system
 
-## CODACY BADGE:
+### CODACY BADGE:
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a3f28c8e3ddf4b47a8e9de6779147beb)](https://www.codacy.com/gh/lokesh4309/M1_Application_Customer-billing-system/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lokesh4309/M1_Application_Customer-billing-system&amp;utm_campaign=Badge_Grade)
 
-## CODE QUALITY SCORE:
+### CODE QUALITY SCORE:
 ![code quality score](https://api.codiga.io/project/30003/score/svg)
 
-## CODE GRADE:
+### CODE GRADE:
 ![CODE GRADE](https://api.codiga.io/project/30003/status/svg)
 
 
